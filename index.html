@@ -5,38 +5,109 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Forex Signal Dashboard</title>
 <style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #0a0a0a;
-  color: #fff;
-  text-align: center;
-}
-h1 { margin-top: 20px; color: #ff6ec7; }
-.tabs { display: flex; justify-content: center; margin: 20px 0; gap: 15px; }
-.tab { padding: 10px 20px; cursor: pointer; border-radius: 25px; font-weight: bold; background: #1a1a1a; color: #fff; border: 2px solid #ff6ec7; transition: 0.3s; }
-.tab.active { background: #00c8ff; color: #0a0a0a; border-color: #00c8ff; }
-.card { border-radius: 15px; padding: 20px; margin: 15px auto; width: 90%; max-width: 400px; background: linear-gradient(145deg, #ff6ec7, #00c8ff); color: #0a0a0a; box-shadow: 0 0 15px rgba(255,110,199,0.7), 0 0 15px rgba(0,200,255,0.7); }
-.card h2 { margin-top: 0; }
-.buy { color: #00c8ff; font-weight: bold; font-size: 22px; }
-.sell { color: #ff6ec7; font-weight: bold; font-size: 22px; }
+body { margin:0; font-family: Arial, sans-serif; background:#0a0a0a; color:#fff; text-align:center; }
+h1 { margin-top:20px; color:#ff6ec7; }
+.tabs { display:flex; justify-content:center; margin:20px 0; gap:15px; flex-wrap:wrap; }
+.tab { padding:10px 20px; cursor:pointer; border-radius:25px; font-weight:bold; background:#1a1a1a; color:#fff; border:2px solid #ff6ec7; transition:0.3s; }
+.tab.active { background:#00c8ff; color:#0a0a0a; border-color:#00c8ff; }
+.card { border-radius:15px; padding:20px; margin:15px auto; width:90%; max-width:400px; background:linear-gradient(145deg,#ff6ec7,#00c8ff); color:#0a0a0a; box-shadow:0 0 15px rgba(255,110,199,0.7),0 0 15px rgba(0,200,255,0.7); }
+.card h2 { margin-top:0; }
+.buy { color:#00c8ff; font-weight:bold; font-size:22px; }
+.sell { color:#ff6ec7; font-weight:bold; font-size:22px; }
+#dashboard { display:none; }
+#passwordDiv { margin-top:50px; }
+#vipPass { padding:10px; width:200px; border-radius:5px; border:none; }
+#enterBtn { padding:10px 20px; margin-left:10px; border:none; border-radius:5px; background:#ff6ec7; color:#0a0a0a; font-weight:bold; cursor:pointer; }
 </style>
 </head>
 <body>
 
+<h1>Forex Signal Dashboard</h1>
+
+<div id="passwordDiv">
+  <h2>Enter VIP Access</h2>
+  <input type="password" id="vipPass" placeholder="Password">
+  <button id="enterBtn">Enter</button>
+</div>
+
+<div id="dashboard">
+  <div class="tabs">
+    <div class="tab" id="scalpingTab" onclick="switchStyle('scalping')">Scalping</div>
+    <div class="tab" id="dayTab" onclick="switchStyle('day')">Day Trading</div>
+    <div class="tab" id="swingTab" onclick="switchStyle('swing')">Swing Trading</div>
+  </div>
+  <div id="signalContainer"></div>
+</div>
+
 <script>
-  // PASSWORD PROTECTION
-  let password = prompt("Enter VIP Access");
-  if(password !== "Teyam26"){ alert("Access Denied"); window.location="https://google.com"; }
+// PASSWORD CHECK
+document.getElementById("enterBtn").addEventListener("click", () => {
+  const p = document.getElementById("vipPass").value;
+  if(p === "Teyam26"){
+    document.getElementById("passwordDiv").style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
+    renderSignals(currentStyle);
+  } else { alert("Access Denied"); }
+});
 
-  // ALL TRADING PAIRS
-  const allPairs = ["XAU/USD","EUR/USD","GBP/USD","USD/JPY","AUD/USD","US30","NAS100","XAG/USD","EUR/GBP","US500","NZD/USD","GBP/JPY","DAX30","USD/CAD","AUD/JPY"];
+// ALL TRADING PAIRS
+const allPairs = ["XAU/USD","EUR/USD","GBP/USD","USD/JPY","AUD/USD","US30","NAS100","XAG/USD","EUR/GBP","US500","NZD/USD","GBP/JPY","DAX30","USD/CAD","AUD/JPY"];
 
-  // TRADING STYLES
-  const tradingStyles = ["scalping","day","swing"];
+// TRADING STYLES
+const tradingStyles = ["scalping","day","swing"];
 
-  // FUNCTION TO GENERATE RANDOM SIGNALS
-  function generateSignals() {
-    const obj = {};
-    tradingStyles.forEach(style => {
-      obj[
+// GENERATE RANDOM SIGNALS
+function generateSignals() {
+  const obj = {};
+  tradingStyles.forEach(style => {
+    obj[style] = allPairs.map(pair => {
+      const type = Math.random() > 0.5 ? "BUY" : "SELL";
+      const entry = (Math.random() * (1000)) + 100;
+      const tp1 = entry + (Math.random() * 50);
+      const tp2 = tp1 + (Math.random() * 50);
+      const sl = entry - (Math.random() * 50);
+      const conf = Math.floor(Math.random() * 30) + 70;
+      return {pair,type,entry:entry.toFixed(2),tp1:tp1.toFixed(2),tp2:tp2.toFixed(2),sl:sl.toFixed(2),conf};
+    });
+  });
+  return obj;
+}
+
+let signals = generateSignals();
+let currentStyle = "scalping";
+
+function renderSignals(style){
+  const container = document.getElementById("signalContainer");
+  container.innerHTML = "";
+  signals[style].forEach(s=>{
+    const card = document.createElement("div");
+    card.className="card";
+    card.innerHTML=`
+      <h2>${s.pair}</h2>
+      <p class="${s.type.toLowerCase()}">${s.type}</p>
+      Entry: ${s.entry}<br>
+      TP1: ${s.tp1}<br>
+      TP2: ${s.tp2}<br>
+      SL: ${s.sl}<br>
+      Confidence: ${s.conf}%
+    `;
+    container.appendChild(card);
+  });
+}
+
+function switchStyle(style){
+  currentStyle=style;
+  renderSignals(style);
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+  document.getElementById(style+"Tab").classList.add("active");
+}
+
+// AUTO REFRESH EVERY 5 MINUTES
+setInterval(()=>{
+  signals = generateSignals();
+  renderSignals(currentStyle);
+}, 300000);
+</script>
+
+</body>
+</html>
