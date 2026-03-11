@@ -1,82 +1,109 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-<title>Forex Signals</title>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forex Signal Dashboard</title>
 <style>
-
-body{
-background:black;
-color:white;
-font-family:Arial;
-text-align:center;
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0a0a0a;
+  color: #fff;
+  text-align: center;
+}
+h1 {
+  margin-top: 20px;
+  color: #ff6ec7; /* neon pink */
 }
 
-.card{
-border:2px solid red;
-padding:20px;
-margin:20px;
-border-radius:10px;
+/* Tabs */
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  gap: 15px;
+}
+.tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 25px;
+  font-weight: bold;
+  background: #1a1a1a;
+  color: #fff;
+  border: 2px solid #ff6ec7;
+  transition: 0.3s;
+}
+.tab.active {
+  background: #00c8ff;
+  color: #0a0a0a;
+  border-color: #00c8ff;
 }
 
-.buy{
-color:lime;
-font-size:25px;
+/* Signal Card */
+.card {
+  border-radius: 15px;
+  padding: 20px;
+  margin: 15px auto;
+  width: 90%;
+  max-width: 400px;
+  background: linear-gradient(145deg, #ff6ec7, #00c8ff);
+  color: #0a0a0a;
+  box-shadow: 0 0 15px rgba(255,110,199,0.7), 0 0 15px rgba(0,200,255,0.7);
 }
-
-.sell{
-color:red;
-font-size:25px;
-}
-
+.card h2 { margin-top: 0; }
+.buy { color: #00c8ff; font-weight: bold; font-size: 22px; }
+.sell { color: #ff6ec7; font-weight: bold; font-size: 22px; }
 </style>
 </head>
-
 <body>
 
 <script>
+  // PASSWORD PROTECTION
+  let password = prompt("Enter VIP Access");
+  if(password !== "Teyam26"){
+    alert("Access Denied");
+    window.location="https://google.com";
+  }
 
-let password = prompt("Enter VIP Access")
+  // FULL LIST OF SIGNALS (Scalping, Day, Swing)
+  const signals = {
+    scalping: [
+      {pair: "XAU/USD", type: "BUY", entry: 5235, tp1: 5255, tp2: 5280, sl: 5215, conf: 82},
+      {pair: "EUR/USD", type: "SELL", entry: 1.0850, tp1: 1.0830, tp2: 1.0800, sl: 1.0870, conf: 75},
+      {pair: "GBP/USD", type: "BUY", entry: 1.2740, tp1: 1.2780, tp2: 1.2820, sl: 1.2700, conf: 78},
+      {pair: "USD/JPY", type: "SELL", entry: 138.20, tp1: 137.80, tp2: 137.50, sl: 138.50, conf: 76},
+      {pair: "AUD/USD", type: "BUY", entry: 0.6780, tp1: 0.6820, tp2: 0.6860, sl: 0.6740, conf: 80},
+      {pair: "US30", type: "SELL", entry: 33650, tp1: 33500, tp2: 33350, sl: 33800, conf: 70},
+      {pair: "NAS100", type: "BUY", entry: 13750, tp1: 13800, tp2: 13850, sl: 13700, conf: 79}
+    ],
+    day: [
+      {pair: "XAG/USD", type: "BUY", entry: 24.5, tp1: 25, tp2: 25.5, sl: 24, conf: 78},
+      {pair: "EUR/GBP", type: "SELL", entry: 0.8850, tp1: 0.8820, tp2: 0.8800, sl: 0.8880, conf: 75},
+      {pair: "US500", type: "BUY", entry: 4500, tp1: 4525, tp2: 4550, sl: 4480, conf: 77},
+      {pair: "NZD/USD", type: "SELL", entry: 0.6200, tp1: 0.6180, tp2: 0.6150, sl: 0.6220, conf: 72},
+      {pair: "NAS100", type: "BUY", entry: 13750, tp1: 13800, tp2: 13850, sl: 13700, conf: 79}
+    ],
+    swing: [
+      {pair: "GBP/JPY", type: "BUY", entry: 174.50, tp1: 175.50, tp2: 176.50, sl: 173.50, conf: 80},
+      {pair: "DAX30", type: "SELL", entry: 15450, tp1: 15300, tp2: 15150, sl: 15600, conf: 73},
+      {pair: "USD/CAD", type: "BUY", entry: 1.2600, tp1: 1.2650, tp2: 1.2700, sl: 1.2550, conf: 76},
+      {pair: "AUD/JPY", type: "SELL", entry: 93.50, tp1: 92.80, tp2: 92.20, sl: 94.00, conf: 74},
+      {pair: "NAS100", type: "BUY", entry: 13750, tp1: 13800, tp2: 13850, sl: 13700, conf: 79}
+    ]
+  };
 
-if(password !== "1234"){
-alert("Access Denied")
-window.location="https://google.com"
-}
+  // CURRENT STYLE
+  let currentStyle = "scalping";
 
-</script>
-
-<h1>FOREX SIGNAL DASHBOARD</h1>
-
-<div class="card">
-<h2>XAU/USD</h2>
-<p class="buy">BUY</p>
-Entry: 5232<br>
-TP1: 5255<br>
-TP2: 5280<br>
-SL: 5205<br>
-Confidence: 80%
-</div>
-
-<div class="card">
-<h2>EUR/USD</h2>
-<p class="sell">SELL</p>
-Entry: 1.0850<br>
-TP1: 1.0830<br>
-TP2: 1.0800<br>
-SL: 1.0870<br>
-Confidence: 75%
-</div>
-
-<div class="card">
-<h2>GBP/USD</h2>
-<p class="buy">BUY</p>
-Entry: 1.2740<br>
-TP1: 1.2780<br>
-TP2: 1.2820<br>
-SL: 1.2700<br>
-Confidence: 78%
-</div>
-
-</body>
-</html>
+  function renderSignals(style) {
+    const container = document.getElementById("signalContainer");
+    container.innerHTML = ""; // clear
+    signals[style].forEach(s => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <h2>${s.pair}</h2>
+        <p class="${s.type.toLowerCase()}">${s.type}</p>
+        Entry: ${s.entry}<br>
+        TP
