@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Forex Signals</title>
+
+<style>
+
+body{
+background:black;
+color:white;
+font-family:Arial;
+text-align:center;
+}
+
+.card{
+border:2px solid red;
+padding:20px;
+margin:20px;
+border-radius:10px;
+}
+
+.buy{
+color:lime;
+font-size:25px;
+}
+
+.sell{
+color:red;
+font-size:25px;
+}
+
+</style>
+</head>
+
+<body>
+
+<script>
+
+let password = prompt("Enter VIP Access")
+
+if(password !== "1234"){
+alert("Access Denied")
+window.location="https://google.com"
+}
+
+</script>
+
+<h1>FOREX SIGNAL DASHBOARD</h1>
+
+<div class="card">
+<h2>XAU/USD</h2>
+<p class="buy">BUY</p>
+Entry: 5232<br>
+TP1: 5255<br>
+TP2: 5280<br>
+SL: 5205<br>
+Confidence: 80%
+</div>
+
+<div class="card">
+<h2>EUR/USD</h2>
+<p class="sell">SELL</p>
+Entry: 1.0850<br>
+TP1: 1.0830<br>
+TP2: 1.0800<br>
+SL: 1.0870<br>
+Confidence: 75%
+</div>
+
+<div class="card">
+<h2>GBP/USD</h2>
+<p class="buy">BUY</p>
+Entry: 1.2740<br>
+TP1: 1.2780<br>
+TP2: 1.2820<br>
+SL: 1.2700<br>
+Confidence: 78%
+</div>
+
+</body>
+</html>
